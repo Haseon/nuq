@@ -11,7 +11,8 @@ nuQ or nuq (pronounced "nuke") is a quiz script interpreter. Its main use is ass
 
 2. Then it will immediately give you a question by suggesting a key(or by quiz options, keys) from which you should be able to infer other information of that object. You type an answer in order listed above, seperated by comma(s)(if the answer have multiple values together.) If your answer were wrong, nuq will ask "What?" again, until you have the right answer or submit an empty one. nuq will show what was the correct answer when you did the latter.
 
-```The number of this element is 1. What are the name, symbol, period and group of this one?
+```
+The number of this element is 1. What are the name, symbol, period and group of this one?
 > booboolah!
 What?
 > Hydrogen, 1 1, 1
@@ -31,7 +32,7 @@ The name of this element is Helium. What are the number, symbol, period and grou
 
 What nuq does is, in fact, to assist memorizing 'tables'. So writing a quiz is no more than writing tables, modified by options and blocked by block signs if you want.
 
-A .nuq file is composed of tables and options. A tables is composed of a category, attributes and objects.
+A ```.nuq``` file is composed of tables and options. A tables is composed of a category, attributes and objects.
 
 A category stands for what this all is about. For intance, 'element' is the only category in Periodic table. A category is marked by ```<``` and ```>```. In this case, we should write ```<element>``` in the first line of the table to tell the interpreter the category of this table is 'element'.
 
@@ -41,7 +42,8 @@ Finally, you should describe objects by writing down the values for attributes i
 
 Here is a simple example explaining what we've read so far:
 
-```<element>
+```
+<element>
 
 number : name : symbol : period ; group ;
 
@@ -50,27 +52,28 @@ number : name : symbol : period ; group ;
 3 : Lithium : Li : 2 ; 1 ;
 ```
 
-== Lock out something!
+## Lock out something!
 
 "Now, I want to practise only for this things, and except the other items from quiz for a while, but don't want to permenently remove them from quiz file. Because, later, I will practise for that things, and except what i'm now practising about." might be a kind of very common desire for quiz learners (or, at least, me and my friend.) With nuQ, you can do this by three types of means:
 
-1. You can make nuQ to ignore certain parts of .nuq file by blocking with {{{ and }}}. nuQ reads nothing between {{{ and }}}.
+1. You can make nuQ to ignore certain parts of .nuq file by blocking with ```{{{``` and ```}}}```. nuQ reads nothing between them.
 
-2. To make nuQ ignore a certain line, add '##' at the head of the line.
+2. To make nuQ ignore a certain line, add ```##``` at the head of the line.
 
-3. nuQ will also ignore any attributes whose names are preceded by '{{'.
+3. nuQ will also ignore any attributes whose names are preceded by ```{{```.
 
 As you can see, it is possible to use the feature to left comments.
 
-== Quiz Options
+## Quiz Options
 
-You can control various things by quiz options. There is a quiz option related with question order. '--fromstart 1' means it will ask you everything from start to end. In contrast, '--fromend 1' means it will ask you from end to start. '--truerandom 20' means it will ask you anything randomly for 20 times.
+You can control various things by quiz options. There is a quiz option related with question order. ```--fromstart 1``` means it will ask you everything from start to end. In contrast, ```--fromend 1``` means it will ask you from end to start. ```--truerandom 20``` means it will ask you anything randomly 20 times.
 
-== Command line options
+## Command line options
 
-If you want a quiz to be executed not as the quiz options written in the .nuq file, and it is not worth your 10 seconds for editing, you are just able to change quiz option one-timely with command line options. It is no more than writing what you've been writing in .nuq files in command line.
+If you want a quiz to be executed not as the quiz options written in the ```.nuq``` file, and it is not worth your 10 seconds for editing, you are just able to change quiz option one-timely with command line options. It is no more than writing what you've been writing in ```.nuq``` files in command line.
 
-```$ ./nuq --fromstart 1 periodic.nuq
+```
+$ ./nuq --fromstart 1 periodic.nuq
 the number of this element is 1. What are its name, symbol, period and group?
 >Hydrogen, H, 1, 1
 Correct!
