@@ -43,7 +43,7 @@ keys = map fst
 
 
 
---quiz = "<Element>\n\n--truerandom 100\n\nnumber;symbol;name;period:group:\n1 ; H ; Hydrogen ; 1 : 1 :\n\n{{{2 ; He ; Helium ; 1 : 18 :}}}\n\n3 ; Li ; Lithium ; 2 : 1 :"
+--quiz = "<Element>\n\n--truerandom 100\n\nnumber:symbol:name:period;group;\n1 : H : Hydrogen : 1 ; 1 ;\n\n{{{2 : He : Helium : 1 ; 18 ;}}}\n\n3 : Li : Lithium : 2 ; 1 ;"
 --
 --main = newStdGen >>= (\g -> ask (mkStdGens $ next g) . parse . removeComment $ quiz) >>= showScore
 
@@ -65,7 +65,8 @@ removeComment :: RawQuiz -> RawQuiz
 removeComment = unlines . removeOneLineComment . lines . removeOverLineComment . exceptQuotes
 exceptQuotes = id
 removeOverLineComment :: String -> String
-removeOverLineComment = concat . splitRegex (mkRegex "[{]{3}([^{]|[\n])*[}]{3}") -- i don't know why non-greedy regex(".*?") doesn't work.
+removeOverLineComment = concat . splitRegex (mkRegex "[{]{3}([^{]|[\n])*[}]{3}")
+-- i don't know why non-greedy regex(".*?") doesn't work.
 removeOneLineComment :: [String] -> [String]
 removeOneLineComment = map $ (\s -> if s == "" then "" else head . splitRegex (mkRegex "##") $ s)
 
@@ -109,16 +110,16 @@ insertCategory :: Category -> Object -> Object
 insertCategory c = insert (Attribute "Category" False False) c
 
 mkAttribute :: String -> [Attribute]
-mkAttribute s = getZipList $ Attribute <$> (ZipList $ map strip rawContentsA) <*> (ZipList $ map mkIsKey colonListA) <*> (ZipList $ map mkIsActive rawContentsA)
+mkAttribute s = zipWith3 Attribute (map strip rawContentsA) (map mkIsKey colonListA) (map mkIsActive rawContentsA)
   where rawContentsA = splitRegex (mkRegex " *(;|:) *") s
         colonListA = filter ((||) <$> (==';') <*> (==':')) s
-        mkIsKey ';' = True
-        mkIsKey ':' = False
+        mkIsKey ':' = True
+        mkIsKey ';' = False
         mkIsActive (a:b:_) = not (a == '{' && a == b)
         strip str@(a:b:striped) = if not $ mkIsActive str then striped else str
 
 mkObject :: [Attribute] -> String -> Object
-mkObject attr s = getZipList $ (,) <$> (ZipList attr) <*> (ZipList $ splitRegex (mkRegex " *(;|:) *") s)
+mkObject attr s = zipWith (,) attr (splitRegex (mkRegex " *(;|:) *") s)
 
 ask :: [StdGen] -> (GeneralOptions, [Object]) -> IO [Int]
 ask gens o = case (howManyTimes $ fst o) of
@@ -131,11 +132,12 @@ ask gens o = case (howManyTimes $ fst o) of
         askRandom (gen1, gen2) = let nowObject = pick allObject gen1
                                  in askOne nowObject (randomAttr nowObject gen2)
 randomAttr object gen = pick (filter ((&&) <$> isKey <*> isActive) $ keys object) gen
-askAll n a b = fmap (sumZipList . concat . replicate n) . sequence . getZipList $ askOne <$> (ZipList a) <*> (ZipList $ map b a)
-mkChain (a:b:xs) = (a,b):(mkChain (b:xs)) -- i don't know why but without mkChain it asks same objects with same attributes.
+askAll n a b = fmap (sumZipList . concat . replicate n) . sequence $ zipWith askOne a (map b a)
+mkChain (a:b:xs) = (a,b):(mkChain (b:xs))
+-- i don't know why but without mkChain it asks same objects with same attributes.
 mkChain _ = []
 sumZipList :: [[Int]] -> [Int]
-sumZipList = foldr1 (\a b-> getZipList $ (+) <$> ZipList a <*> ZipList b)
+sumZipList = foldr1 (\a b-> zipWith (+) a b)
 appendFirst m lst = fmap (\l->(m:l)) lst
 
 pick :: (RandomGen g) => [a] -> g -> a
