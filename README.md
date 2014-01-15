@@ -1,7 +1,7 @@
 nuQ
 ======
 
-nuQ or nuq (pronounced "nuke") is a quiz script interpreter. Its main use is assisting learning and memorization by making yourself repeatedly solve quizzes. It allows you to deal with more complex data(e.g. Periodic table, Latin verb conjugation) as quizzes, as well as to customize and change anything you want quickly by command line options and modifying scripts(which is written in a simple DSL for quiz making). It is mainly inspired by 'quiz' in bsdgames package in the basic way it interacts with solvers.
+nuQ or nuq (pronounced "nuke") is a quiz script interpreter. Its purpose is to assist learning and memorization by making yourself repeatedly solve quizzes. It allows you to deal with more complex data(e.g. Periodic table, Latin verb conjugation) as quizzes, as well as to customize many things quickly by command line options and modifying scripts(which is written in a simple DSL for quiz making). It is mainly inspired by 'quiz' in bsdgames package in the basic way it interacts with users.
 
 ## Solving a quiz - Basic guide
 
@@ -28,7 +28,7 @@ The name of this element is Helium. What are the number, symbol, period and grou
 >
 ```
 
-## write a quiz script
+## Write a quiz script
 
 What nuq does is, in fact, to assist memorizing 'tables'. So writing a quiz is no more than writing tables, modified by options and blocked by block signs if you want.
 
@@ -38,7 +38,7 @@ A category stands for what this all is about. For intance, 'element' is the only
 
 Attributes defines what types of information you will answer about. In this example, number, symbol and group are attributes. There are two types of attributes: those which can be a key to infer other information, and those which cannot. the former are followed by ```:```, while the latter are followed by ```;```. In this case, we write ```number : name : symbol : period ; group ;``` to define the attributes.
 
-Finally, you should describe objects by writing down the values for attributes in the order listed in the attributes description, seperated by ```:``` or ```;```. ```1 : Hydrogen : H : 1 ; 1 ;``` is a good example for representing 'Hydrgen' object in this system. Ah, you are curious if the correct matching for ```:``` and ```;``` is necessary? Now, the answer will be 'no' (the developer's laziness is the why). But correct colon matching on the matched attributes is heavily recommended.
+Finally, you should describe objects by writing down the values for attributes in the order listed in the attributes description, seperated by ```:``` or ```;```. ```1 : Hydrogen : H : 1 ; 1 ;``` is a good example for representing 'Hydrpgen' object in this system. Ah, you are curious if the correct matching for ```:``` and ```;``` is necessary? For now, the answer will be 'no' (the developer's laziness is the why). But correct colon matching on the matched attributes is heavily recommended.
 
 Here is a simple example explaining what we've read so far:
 
